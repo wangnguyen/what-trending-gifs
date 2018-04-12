@@ -1,5 +1,5 @@
 {
-  "name": "ReactJs Trending Gifs",
+  "name": "ReactJs-Trending-Gifs",
   "version": "1.0.0",
   "description": "Build Trending Gifs app with ReactJs",
   "scripts": {
@@ -65,7 +65,9 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "redux-form-material-ui": "^4.3.3"
+    "redux-form-material-ui": "^4.3.3",
+    "redux-saga": "^0.16.0",
+    "whatwg-fetch": "^2.0.4"
   },
   "pre-commit": [
     "precommit"

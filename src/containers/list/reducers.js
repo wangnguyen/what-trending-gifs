@@ -8,6 +8,9 @@ export default function reducers(state = [], action) {
     case TYPES.VIEW_DETAIL:
       console.log('View detail');
       return state;
+    case TYPES.ADD_DATA:
+      console.log('add data');
+      return state;
     default:
       return state;
   }
