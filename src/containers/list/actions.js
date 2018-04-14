@@ -3,6 +3,7 @@ export const TYPES = {
   ADD_DATA: 'ADD_DATA',
   VIEW_DETAIL: 'VIEW_DETAIL',
   LOAD_MORE: 'LOAD_MORE',
+  LOAD_ERROR: 'LOAD_ERROR',
 };
 
 export const addData = arr => ({

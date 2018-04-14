@@ -1,6 +1,9 @@
+/* eslint-disable */
+
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var MinifyPlugin = require("babel-minify-webpack-plugin");
 
 module.exports = {
   entry: [
@@ -34,6 +37,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin({ filename: 'app.css' }) // config name file of style
+    new ExtractTextPlugin({ filename: 'app.css' }), // config name file of style
+    new MinifyPlugin()
   ],
 };

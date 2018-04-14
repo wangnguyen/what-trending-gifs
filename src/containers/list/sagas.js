@@ -15,7 +15,7 @@ function* fetchTrendingGifs(action) {
     );
     yield put({ type: TYPES.ADD_DATA, result });
   } catch (error) {
-    console.log('ERROR: ', error);
+    yield put({ type: TYPES.LOAD_ERROR, error });
   }
 }
 

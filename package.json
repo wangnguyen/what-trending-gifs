@@ -1,7 +1,7 @@
 {
-  "name": "ReactJs-Trending-Gifs",
+  "name": "what-trending-gifs",
   "version": "1.0.0",
-  "description": "Build Trending Gifs app with ReactJs",
+  "description": "Simple Trending Gifs app with ReactJs",
   "scripts": {
     "dev": "node build-dev/dev-build.server.js",
     "build": "node build-prod/prod-build.server.js",
@@ -27,6 +27,7 @@
     "babel-core": "^6.0.20",
     "babel-eslint": "^8.2.1",
     "babel-loader": "^6.0.1",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",

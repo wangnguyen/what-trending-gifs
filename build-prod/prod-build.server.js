@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var webpack = require('webpack');
 var ProgressPlugin = require('webpack/lib/ProgressPlugin')
 var config = require('./webpack.config');
@@ -9,5 +11,5 @@ compiler.apply(new ProgressPlugin((percentage, msg) => {
 
  compiler.run((err, stats) => {
      if (err) return reject(err);
-     resolve(stats)
+     console.log(stats)
  })

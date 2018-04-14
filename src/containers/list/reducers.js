@@ -19,6 +19,12 @@ export default function reducers(state = initialState, action) {
       data = data.concat(additionalData);
       return Object.assign({}, state, { data, pagination, isLoading: false });
     }
+    case TYPES.LOAD_ERROR: {
+      // error handler
+      console.error(action.error);
+      alert('Load API error');
+      return Object.assign({}, state, { isLoading: false, error: action.error });
+    }
     default:
       return state;
   }
