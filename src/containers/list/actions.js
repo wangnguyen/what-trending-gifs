@@ -10,12 +10,7 @@ export const addData = arr => ({
   arr,
 });
 
-export const viewDetail = obj => ({
-  type: TYPES.VIEW_DETAIL,
-  obj,
-});
-
-export const loadMore = offset => ({
+export const loadMore = params => ({
   type: TYPES.LOAD_MORE,
-  offset,
+  ...params,
 });

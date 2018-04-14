@@ -35,7 +35,7 @@
     "css-loader": "^0.28.2",
     "eslint": "^4.17.0",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-react": "^7.6.1",
     "express": "^4.13.4",
     "extract-text-webpack-plugin": "^2.1.0",
@@ -53,6 +53,7 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
+    "@material-ui/icons": "^1.0.0-beta.42",
     "classnames": "^2.2.5",
     "downshift": "^1.28.0",
     "highcharts": "^6.0.7",

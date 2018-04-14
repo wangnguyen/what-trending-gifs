@@ -3,86 +3,74 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
+import Modal from 'material-ui/Modal';
+import { CircularProgress } from 'material-ui/Progress';
 
-import { viewDetail, loadMore } from './actions';
+import { loadMore } from './actions';
+import GifItemUI from '../../components/gif-item-ui';
+import GifItemDetailUI from '../../components/gif-item-defail-ui';
 
-const gif = 'http://localhost:8699/assets/images/demo.gif';
-const avatar = 'http://localhost:8699/assets/images/avatar.png';
+import styles from './list.styles';
 
-const styles = () => ({
-  listContainer: {
-    width: '100%',
-  },
-  title: {
-    fontWeight: 'normal',
-    fontSize: 30,
-    textAlign: 'center',
-    marginTop: 50,
-    marginBottom: 30,
-  },
-  listImgs: {
-    width: '100%',
-    maxWidth: 1000,
-    margin: 'auto',
-    display: 'block',
-    padding: '0 10px',
-    boxSizing: 'border-box',
-  },
-  imageItem: {
-    padding: 10,
-  },
-  button: {
-    margin: '50px auto',
-    display: 'block',
-  },
-  img: {
-    width: '100%',
-    height: 'auto',
-  },
-  userInfo: {
-    display: 'flex',
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  userAvatar: {
-    width: 30,
-    height: 30,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  itemTitle: {
-    width: '100%',
-    whiteSpace: 'nowrap',
-    fontSize: 14,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    marginBottom: 10,
-  },
-});
+const limit = 20;
 
 class List extends Component {
   constructor(props) {
     super(props);
+    this.doViewDetail = this.doViewDetail.bind(this);
+    this.doCloseViewDetail = this.doCloseViewDetail.bind(this);
+    this.state = {
+      showModal: false,
+      viewItem: {},
+    };
+  }
+  componentWillMount() {
+    const { pagination } = this.props;
+    const loadMoreParams = {
+      offset: limit + pagination.offset,
+      limit,
+    };
+    this.props.doLoadMore(loadMoreParams);
+  }
+  doViewDetail(item) {
+    this.setState({ showModal: true, viewItem: item });
+  }
+  doCloseViewDetail() {
+    this.setState({ showModal: false });
+  }
+  renderModal() {
+    const { viewItem, showModal } = this.state;
+    if (viewItem && viewItem.images) {
+      return (
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={showModal}
+          onClose={this.doCloseViewDetail}
+        >
+          <GifItemDetailUI data={viewItem} onClose={this.doCloseViewDetail} />
+        </Modal>
+      );
+    }
+    return '';
   }
   render() {
-    const { classes, onClickLoadMore, onClickViewDetail } = this.props;
-    const itemImg = [];
-    for (let i = 0; i < 20; i += 1) {
-      itemImg.push(<Grid item xs={6} sm={4} md={3} key={i}>
-        <Paper className={classes.imageItem}>
-          <h4 className={classes.itemTitle}>oh my god omg GIF by Yosub Kim, Ruler of Butts</h4>
-          <img onClick={() => onClickViewDetail()} src={gif} className={classes.img} />
-          <a href="#" target="_blank">
-            <div className={classes.userInfo}>
-              <img className={classes.userAvatar} src={avatar} />
-              <div className={classes.userName}>Nick At Nite</div>
-            </div>
-          </a>
-        </Paper>
-      </Grid>);
+    const {
+      classes,
+      data,
+      doLoadMore,
+      pagination,
+      isLoading,
+    } = this.props;
+    const loadMoreParams = {
+      offset: limit + pagination.offset,
+      limit,
+    };
+    let itemImg = '';
+    if (data && data.length) {
+      itemImg = data.map(item => <GifItemUI key={item.id} doViewDetail={this.doViewDetail} data={item} />);
     }
     return (
       <div className={classes.listContainer}>
@@ -92,11 +80,17 @@ class List extends Component {
             { itemImg }
           </Grid>
         </div>
-        <Button
-          onClick={() => onClickLoadMore()}
-          variant="raised" color="primary" className={classes.button}>
-          Load more
-        </Button>
+        { isLoading
+          ? <CircularProgress className={classes.button} />
+          : (
+            <Button
+              onClick={() => doLoadMore(loadMoreParams)}
+              variant="raised" color="primary" className={classes.button}>
+              Load more
+            </Button>
+          )
+        };
+        { this.renderModal() }
       </div>
     );
   }
@@ -104,16 +98,23 @@ class List extends Component {
 
 List.propTypes = {
   classes: PropTypes.object.isRequired,
-  onClickLoadMore: PropTypes.func.isRequired,
-  onClickViewDetail: PropTypes.func.isRequired,
+  doLoadMore: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired,
+  pagination: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
+const mapStateToProps = state => ({
+  data: state.data,
+  pagination: state.pagination,
+  isLoading: state.isLoading,
+});
+
 const mapDispatchToProps = dispatch => ({
-  onClickViewDetail: obj => dispatch(viewDetail(obj)),
-  onClickLoadMore: offset => dispatch(loadMore(offset)),
+  doLoadMore: offset => dispatch(loadMore(offset)),
 });
 
 export default compose(
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withStyles(styles)
 )(List);

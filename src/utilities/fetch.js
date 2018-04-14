@@ -1,27 +1,21 @@
 import 'whatwg-fetch';
 
-const url = 'https://api.giphy.com/'; // v1/gifs/trending
+const domain = 'https://api.giphy.com';
 const apiKey = 'sJyyXZhYbcyEpNBKWzi2ykt92ucGzkX0';
 
-const objectToURLParams = (obj) => {
-  let str = '';
-  for (const key in obj) {
-    if (str != '') {
-      str += '&';
-    }
-    str += `${key}=${encodeURIComponent(obj[key])}`;
-  }
-  return str;
-};
+function objectToURLParams(obj = {}) {
+  return Object.keys(obj).map(key => (`${key}=${obj[key]}`)).join('&');
+}
 
 const fetchData = (url, params, method = 'GET') => {
   switch (method) {
     case ('POST'):
     case ('GET'):
-    default:
+    default: {
       const urlParams = objectToURLParams(params);
-      const fullURL = `${url}?api_key=${apiKey}&${urlParams}`;
-      return fetch(fullURL);
+      const fullURL = `${domain}${url}?api_key=${apiKey}&${urlParams}`;
+      return fetch(fullURL).then(res => res.json());
+    }
   }
 };
 

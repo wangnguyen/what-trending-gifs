@@ -1,16 +1,24 @@
 import { TYPES } from './actions';
 
-export default function reducers(state = [], action) {
+const initialState = {
+  data: [],
+  pagination: {
+    offset: 1,
+  },
+  isLoading: true,
+};
+
+export default function reducers(state = initialState, action) {
   switch (action.type) {
     case TYPES.LOAD_MORE:
-      console.log('Load more');
-      return state;
-    case TYPES.VIEW_DETAIL:
-      console.log('View detail');
-      return state;
-    case TYPES.ADD_DATA:
-      console.log('add data');
-      return state;
+      return Object.assign({}, state, { isLoading: true });
+    case TYPES.ADD_DATA: {
+      let { data } = state;
+      const { pagination } = action.result;
+      const additionalData = action.result.data;
+      data = data.concat(additionalData);
+      return Object.assign({}, state, { data, pagination, isLoading: false });
+    }
     default:
       return state;
   }

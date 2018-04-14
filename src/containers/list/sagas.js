@@ -1,20 +1,26 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { TYPES } from './actions';
+import fetch from '../../utilities/fetch';
 
-function* fetchGifs() {
+const endpoint = {
+  gifsTrending: '/v1/gifs/trending',
+};
+
+function* fetchTrendingGifs(action) {
   try {
-    const data = yield call(fetch, url, {
-      method: 'POST',
-      body: { api_key: apiKey },
-    });
-    yield put({ type: TYPES.ADD_DATA, data });
+    const result = yield call(
+      fetch,
+      endpoint.gifsTrending,
+      { offset: action.offset, limit: action.limit }
+    );
+    yield put({ type: TYPES.ADD_DATA, result });
   } catch (error) {
     console.log('ERROR: ', error);
   }
 }
 
 function* sideEffect() {
-  yield takeEvery(TYPES.LOAD_MORE, fetchGifs);
+  yield takeEvery(TYPES.LOAD_MORE, fetchTrendingGifs);
 }
 
 export default sideEffect;
